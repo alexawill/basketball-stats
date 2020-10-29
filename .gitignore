@@ -3,3 +3,5 @@
 /venv/include/
 /venv/lib/
 /venv/pyvenv.cfg
+.idea/
+.DS_Store
