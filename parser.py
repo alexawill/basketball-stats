@@ -35,6 +35,11 @@ team_stats = pd.DataFrame(
     columns=['G', 'MP', 'FG', 'FGA', 'FG%', '3P', '3PA', '3P%', '2P', '2PA', '2P%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB',
              'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS', 'TEAM', 'SEASON'])
 
+opp_stats = pd.DataFrame(
+    columns=['OPP_G', 'OPP_MP', 'OPP_FG', 'OPP_FGA', 'OPP_FG%', 'OPP_3P', 'OPP_3PA', 'OPP_3P%', 'OPP_2P', 'OPP_2PA',
+             'OPP_2P%', 'OPP_FT', 'OPP_FTA', 'OPP_FT%', 'OPP_ORB', 'OPP_DRB', 'OPP_TRB', 'OPP_AST', 'OPP_STL',
+             'OPP_BLK', 'OPP_TOV', 'OPP_PF', 'OPP_PTS', 'TEAM', 'SEASON'])
+
 for i in range(2011, 2021):
     # this section is to only get abbreviations for teams that are active for a specific season. Without this we get and indexing error
     schedule = get_schedule(i, playoffs=False)
@@ -45,7 +50,14 @@ for i in range(2011, 2021):
     keys = team_dict.keys() & schedule
     team_abbr = [team_dict[x] for x in keys]
 
-    # populating the team_stats dataframe with data from active teams and desired date range
+    # populating the team_stats, opp_stats dataframes with data from active teams and desired date range
     for team in team_abbr:
         temp = get_team_stats(team, i, 'TOTAL').to_frame().T  # transposing temp table
         team_stats = team_stats.append(temp, ignore_index=True)
+
+        temp1 = get_opp_stats(team, i, 'TOTAL').to_frame().T
+        opp_stats = opp_stats.append(temp1, ignore_index=True)
+
+# Export dataframes to CSV for analysis/cleaning
+team_stats.to_csv('team_stats.csv', index=False)
+opp_stats.to_csv('opp_stats.csv', index=False)
