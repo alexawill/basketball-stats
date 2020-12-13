@@ -73,7 +73,7 @@ def getSeasonStandings(startyear, endyear):
 
     for i in range(startyear, endyear + 1):
         # Eastern conference url
-        url = f"https://widgets.sports-reference.com/wg.fcgi?css=1&site=bbr&url=%2Fleagues%2FNBA_{i}.html&div=div_confs_standings_E"
+        url = f"https://widgets.sports-reference.com/wg.fcgi?css=1&site=bbr&url=%2Fleagues%2FNBA_{i}.html&div=div_divs_standings_E"
 
         html = urlopen(url)
         soup = BeautifulSoup(html, features="html.parser")
@@ -98,7 +98,7 @@ def getSeasonStandings(startyear, endyear):
 
     for i in range(startyear, endyear + 1):
         # Western conference url
-        url = f"https://widgets.sports-reference.com/wg.fcgi?css=1&site=bbr&url=%2Fleagues%2FNBA_{i}.html&div=div_confs_standings_W"
+        url = f"https://widgets.sports-reference.com/wg.fcgi?css=1&site=bbr&url=%2Fleagues%2FNBA_{i}.html&div=div_divs_standings_W"
 
         html = urlopen(url)
         soup = BeautifulSoup(html, features="html.parser")
@@ -110,7 +110,7 @@ def getSeasonStandings(startyear, endyear):
         headers = [th.getText() for th in soup.findAll('tr', limit=2)[0].findAll('th')]
 
         # avoid the first header row
-        rows = soup.findAll('tr')[1:]
+        rows = soup.findAll('tr')[2:]
 
         stats = [[td.getText() for td in rows[x].findAll(['a', 'td'])]
                  for x in range(len(rows))]
@@ -122,6 +122,9 @@ def getSeasonStandings(startyear, endyear):
         dfWest = dfWest.append(temp)
 
     df = dfEast.append(dfWest).convert_dtypes()
-    df['GB'] = df['GB'].apply(lambda x: x.replace('—', '0'))
+    df.dropna(inplace=True)
+    df = df.drop(['GB'], axis=1)
+    # df['GB'] = df['GB'].apply(lambda x: x.replace('—', '0'))
+    df['Team'] = df['Team'].apply(lambda x: x.upper())
 
     return df
