@@ -125,6 +125,6 @@ def getSeasonStandings(startyear, endyear):
     df.dropna(inplace=True)
     df = df.drop(['GB'], axis=1)
     # df['GB'] = df['GB'].apply(lambda x: x.replace('—', '0'))
-    df['Team'] = df['Team'].apply(lambda x: x.upper())
+    df['Team'] = df['Team'].apply(lambda x: x.replace('*', '').upper())
 
     return df
