@@ -65,5 +65,3 @@ def getPlayerStats(startyear, endyear):
 
     df.dropna(inplace=True)
     return df
-
-# df.to_csv('team_stats.csv', index=False)
