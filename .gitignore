@@ -1,9 +1,6 @@
 /venv/
-/venv/bin/
-/venv/include/
-/venv/lib/
-/venv/pyvenv.cfg
 .idea/
 .DS_Store
 /notes
 .ipynb_checkpoints/stat analysis notebook-checkpoint.ipynb
+__pycache__/scraper.cpython-39.pyc
